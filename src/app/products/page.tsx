@@ -6,21 +6,12 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Shop All Products" };
 
-interface SearchParams {
-  category?: string;
-  search?: string;
-  sort?: string;
-  featured?: string;
-  minPrice?: string;
-  maxPrice?: string;
-}
-
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: SearchParams;
+  searchParams: Promise<{ category?: string; search?: string; sort?: string; featured?: string; minPrice?: string; maxPrice?: string }>;
 }) {
-  const { category, search, sort, featured, minPrice, maxPrice } = searchParams;
+  const { category, search, sort, featured, minPrice, maxPrice } = await searchParams;
 
   const [products, categories] = await Promise.all([
     prisma.product.findMany({
@@ -28,27 +19,19 @@ export default async function ProductsPage({
         published: true,
         ...(category && { category: { slug: category } }),
         ...(featured === "true" && { featured: true }),
-        ...(search && {
-          name: { contains: search, mode: "insensitive" },
-        }),
-        ...(minPrice || maxPrice
-          ? {
-              price: {
-                ...(minPrice && { gte: parseFloat(minPrice) }),
-                ...(maxPrice && { lte: parseFloat(maxPrice) }),
-              },
-            }
-          : {}),
+        ...(search && { name: { contains: search, mode: "insensitive" } }),
+        ...(minPrice || maxPrice ? {
+          price: {
+            ...(minPrice && { gte: parseFloat(minPrice) }),
+            ...(maxPrice && { lte: parseFloat(maxPrice) }),
+          },
+        } : {}),
       },
       include: { category: true, reviews: { select: { rating: true } } },
       orderBy:
-        sort === "price-asc"
-          ? { price: "asc" }
-          : sort === "price-desc"
-          ? { price: "desc" }
-          : sort === "newest"
-          ? { createdAt: "desc" }
-          : { createdAt: "desc" },
+        sort === "price-asc" ? { price: "asc" }
+        : sort === "price-desc" ? { price: "desc" }
+        : { createdAt: "desc" },
     }),
     prisma.category.findMany(),
   ]);
@@ -64,7 +47,6 @@ export default async function ProductsPage({
             <p className="text-gray-500 text-sm mt-1">{products.length} products found</p>
           </div>
         </div>
-
         <div className="flex flex-col lg:flex-row gap-8">
           <ProductFilters categories={categories} />
           <div className="flex-1">
