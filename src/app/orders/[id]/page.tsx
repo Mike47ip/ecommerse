@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { redirect, notFound } from "next/navigation";
 import { formatPrice, formatDate } from "@/lib/utils";
 import Link from "next/link";
-import { CheckCircle, Package, Truck, MapPin, ArrowLeft } from "lucide-react";
+import { CheckCircle, Package, MapPin, ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Order Details" };
@@ -20,12 +20,13 @@ const STATUS_STYLES: Record<string, string> = {
   REFUNDED: "bg-gray-100 text-gray-700",
 };
 
-export default async function OrderDetailPage({ params }: { params: { id: string } }) {
+export default async function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const session = await auth();
   if (!session) redirect("/login");
 
   const order = await prisma.order.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       items: { include: { product: { select: { images: true, slug: true } } } },
     },
@@ -45,7 +46,6 @@ export default async function OrderDetailPage({ params }: { params: { id: string
           <ArrowLeft size={16} /> Back to Orders
         </Link>
 
-        {/* Header */}
         <div className="card p-6 mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
@@ -65,7 +65,6 @@ export default async function OrderDetailPage({ params }: { params: { id: string
             )}
           </div>
 
-          {/* Progress tracker — only for non-cancelled orders */}
           {!["CANCELLED", "REFUNDED"].includes(order.status) && (
             <div className="mt-6">
               <div className="flex items-center gap-0">
@@ -92,7 +91,6 @@ export default async function OrderDetailPage({ params }: { params: { id: string
         </div>
 
         <div className="grid sm:grid-cols-2 gap-6 mb-6">
-          {/* Shipping address */}
           <div className="card p-5">
             <h2 className="font-semibold text-gray-900 flex items-center gap-2 mb-3">
               <MapPin size={16} className="text-brand-600" /> Shipping Address
@@ -105,7 +103,6 @@ export default async function OrderDetailPage({ params }: { params: { id: string
             </div>
           </div>
 
-          {/* Order summary */}
           <div className="card p-5">
             <h2 className="font-semibold text-gray-900 flex items-center gap-2 mb-3">
               <Package size={16} className="text-brand-600" /> Payment Summary
@@ -129,7 +126,6 @@ export default async function OrderDetailPage({ params }: { params: { id: string
           </div>
         </div>
 
-        {/* Items */}
         <div className="card p-6">
           <h2 className="font-semibold text-gray-900 mb-4">Items Ordered</h2>
           <div className="space-y-4">
