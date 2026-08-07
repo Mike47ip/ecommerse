@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { nanoid } from "crypto";
 
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -14,7 +13,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "No items" }, { status: 400 });
   }
 
-  // Generate unique reference
   const reference = `SW-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
   const order = await prisma.order.create({
