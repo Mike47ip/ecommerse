@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-  --font-inter: 'Inter', sans-serif;
-  --font-plus-jakarta: 'Plus Jakarta Sans', sans-serif;
+  --font-inter: 'Outfit', sans-serif;
+  --font-plus-jakarta: 'Outfit', sans-serif;
 }
 
 @layer base {
@@ -60,12 +60,14 @@
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
   }
 
+  /* Skeleton shimmer */
   .skeleton {
     @apply bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100
       bg-[length:200%_100%] animate-shimmer rounded-lg;
   }
 }
 
+/* Smooth scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { @apply bg-gray-100; }
 ::-webkit-scrollbar-thumb { @apply bg-gray-300 rounded-full; }

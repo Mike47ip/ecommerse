@@ -8,6 +8,10 @@ export const metadata: Metadata = {
   title: { default: "ShopWave", template: "%s | ShopWave" },
   description: "Modern e-commerce — shop the best products online.",
   keywords: ["shop", "ecommerce", "online store", "Ghana"],
+  icons: {
+    icon: "/cart.png",
+    apple: "/cart.png",
+  },
 };
 
 export default async function RootLayout({
