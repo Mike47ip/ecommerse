@@ -1,28 +1,30 @@
 import { RegisterForm } from "@/components/auth/RegisterForm";
 import Link from "next/link";
-import { Zap } from "lucide-react";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = { title: "Create Account" };
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-950 to-brand-900 flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: "linear-gradient(135deg, #000d1a 0%, #001f4d 50%, #0047ab 100%)" }}>
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 font-display font-bold text-2xl text-white mb-2">
-            <span className="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center">
-              <Zap size={20} className="text-white" />
-            </span>
-            ShopWave
+          <Link href="/" className="inline-flex flex-col items-center gap-2">
+            <Image src="/cart.png" alt="GadgetHub Signature" width={52} height={52} className="rounded-xl" />
+            <div>
+              <span className="font-display font-black text-2xl text-white">Gadget</span>
+              <span className="font-display font-black text-2xl text-blue-400">Hub</span>
+              <span className="font-display font-light text-sm text-blue-300 ml-1">signature</span>
+            </div>
           </Link>
-          <p className="text-brand-300 text-sm">Create your account</p>
+          <p className="text-blue-300 text-sm mt-2">Create your account</p>
         </div>
         <div className="card p-8">
           <RegisterForm />
           <p className="text-center text-sm text-gray-500 mt-6">
             Already have an account?{" "}
-            <Link href="/login" className="text-brand-600 font-semibold hover:underline">Sign in</Link>
+            <Link href="/login" className="text-brand-500 font-semibold hover:underline">Sign in</Link>
           </p>
         </div>
       </div>

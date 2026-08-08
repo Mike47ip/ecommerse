@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Zap, Mail, Phone, MapPin } from "lucide-react";
+import Image from "next/image";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 export function Footer() {
   return (
@@ -8,29 +9,37 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 font-display font-bold text-xl text-white mb-3">
-              <span className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center">
-                <Zap size={16} className="text-white" />
-              </span>
-              ShopWave
+            <Link href="/" className="flex items-center gap-2 mb-4">
+              <Image src="/cart.png" alt="GadgetHub" width={32} height={32} className="rounded-lg" />
+              <div>
+                <span className="font-display font-black text-lg text-white">Gadget</span>
+                <span className="font-display font-black text-lg text-brand-400">Hub</span>
+                <span className="font-display font-light text-xs text-gray-500 ml-1">signature</span>
+              </div>
             </Link>
-            <p className="text-sm leading-relaxed">
-              Your modern marketplace for premium products. Fast delivery across Ghana.
+            <p className="text-sm leading-relaxed mb-4">
+              Your premium destination for gadgets and electronics. Fast delivery across Ghana.
             </p>
-            <div className="flex flex-col gap-2 mt-4 text-sm">
-              <span className="flex items-center gap-2"><Mail size={14} /> hello@shopwave.com</span>
+            <div className="flex flex-col gap-2 text-sm">
+              <span className="flex items-center gap-2"><Mail size={14} /> hello@gadgethubsignature.com</span>
               <span className="flex items-center gap-2"><Phone size={14} /> +233 XX XXX XXXX</span>
               <span className="flex items-center gap-2"><MapPin size={14} /> Accra, Ghana</span>
             </div>
           </div>
 
-          {/* Shop */}
+          {/* Categories */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Shop</h4>
+            <h4 className="text-white font-semibold mb-4">Categories</h4>
             <ul className="space-y-2 text-sm">
-              {["All Products", "Electronics", "Fashion", "Home & Living", "Beauty"].map((t) => (
-                <li key={t}>
-                  <Link href="/products" className="hover:text-white transition-colors">{t}</Link>
+              {[
+                { label: "AirPods & Earbuds", slug: "airpods" },
+                { label: "Computers & Laptops", slug: "computers" },
+                { label: "Cameras", slug: "cameras" },
+                { label: "Batteries & Power", slug: "batteries" },
+                { label: "Storage & Drives", slug: "storage" },
+              ].map((c) => (
+                <li key={c.slug}>
+                  <Link href={`/products?category=${c.slug}`} className="hover:text-white transition-colors">{c.label}</Link>
                 </li>
               ))}
             </ul>
@@ -44,6 +53,7 @@ export function Footer() {
                 { label: "My Account", href: "/login" },
                 { label: "My Orders", href: "/orders" },
                 { label: "Cart", href: "/cart" },
+                { label: "Contact Us", href: "/contact" },
               ].map((l) => (
                 <li key={l.href}>
                   <Link href={l.href} className="hover:text-white transition-colors">{l.label}</Link>
@@ -56,7 +66,7 @@ export function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-4">Info</h4>
             <ul className="space-y-2 text-sm">
-              {["About Us", "Contact Us", "Privacy Policy", "Terms of Service", "Returns Policy"].map((t) => (
+              {["About Us", "Privacy Policy", "Terms of Service", "Returns Policy", "Warranty Info"].map((t) => (
                 <li key={t}>
                   <Link href="/contact" className="hover:text-white transition-colors">{t}</Link>
                 </li>
@@ -66,11 +76,9 @@ export function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
-          <p>© {new Date().getFullYear()} ShopWave. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} GadgetHub Signature. All rights reserved.</p>
           <div className="flex items-center gap-2">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/120px-Visa_Inc._logo.svg.png" alt="Visa" className="h-5 opacity-60 grayscale" />
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/120px-Mastercard-logo.svg.png" alt="Mastercard" className="h-5 opacity-60 grayscale" />
-            <span className="text-xs bg-gray-800 px-2 py-1 rounded text-gray-300">Paystack</span>
+            <span className="text-xs bg-brand-500/20 border border-brand-500/30 text-brand-400 px-2 py-1 rounded">Powered by Paystack</span>
           </div>
         </div>
       </div>
