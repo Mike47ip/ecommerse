@@ -6,7 +6,7 @@ const CATEGORIES = [
     name: "AirPods & Earbuds",
     slug: "airpods",
     desc: "Wireless audio",
-    image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&q=80",
+    image: "/images/airpods.jpg",
   },
   {
     name: "Computers",
@@ -18,19 +18,19 @@ const CATEGORIES = [
     name: "Cameras",
     slug: "cameras",
     desc: "Photography & video",
-    image: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=600&q=80",
+    image: "/images/cctv-cams.webp",
   },
   {
     name: "Batteries & Power",
     slug: "batteries",
     desc: "Power banks & chargers",
-    image: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=600&q=80",
+    image: "/images/energizer.png",
   },
   {
     name: "Storage",
     slug: "storage",
     desc: "SSDs, USBs & cards",
-    image: "https://images.unsplash.com/photo-1618410320928-25228d811631?w=600&q=80",
+    image: "/images/pendrive.png",
   },
 ];
 

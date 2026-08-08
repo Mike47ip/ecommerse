@@ -39,7 +39,18 @@ export function HeroSection() {
   return (
     <section className="relative overflow-hidden text-white" style={{ minHeight: "580px" }}>
       {/* Deep blue background */}
-      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #000d1a 0%, #001f4d 40%, #0047ab 100%)" }} />
+      {/* Deep blue background */}
+<div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #000d1a 0%, #001f4d 40%, #0047ab 100%)" }} />
+
+{/* Subtle bg image layered under the blobs — keeps the blue design intact */}
+<div
+  className="absolute inset-0 opacity-[0.09] mix-blend-luminosity"
+  style={{
+    backgroundImage: "url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=80')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  }}
+/>
 
       {/* Animated blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
