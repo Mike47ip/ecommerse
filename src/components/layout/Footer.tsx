@@ -9,14 +9,15 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <Image src="/cart.png" alt="GadgetHub" width={32} height={32} className="rounded-lg" />
-              <div>
-                <span className="font-display font-black text-lg text-white">Gadget</span>
-                <span className="font-display font-black text-lg text-brand-400">Hub</span>
-                <span className="font-display font-light text-xs text-gray-500 ml-1">signature</span>
-              </div>
-            </Link>
+<Link href="/" className="flex items-center mb-4">
+  <Image
+    src="/images/gadgethub.png"
+    alt="GadgetHub Signature"
+    width={180}
+    height={48}
+    className="object-contain"
+  />
+</Link>
             <p className="text-sm leading-relaxed mb-4">
               Your premium destination for gadgets and electronics. Fast delivery across Ghana.
             </p>
