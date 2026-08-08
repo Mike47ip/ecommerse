@@ -15,7 +15,7 @@ A modern, production-ready e-commerce platform built with **Next.js 15**, **Tail
 - 🔍 **Product Filtering** — by category, price range, search, sort, featured
 - ⭐ **Product Reviews** — ratings and comments
 - 📱 **Fully Responsive** — mobile-first design
-- 🌙 **Modern UI** — custom brand palette, animations, skeleton loaders
+- 🌙 **Modern UI** — custom brand palette, animations, skeleton loaders and more
 
 ---
 
