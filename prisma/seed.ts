@@ -4,214 +4,59 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("🌱 Seeding database...");
+  console.log("🌱 Seeding GadgetHub Signature...");
 
-  // Admin user
   const adminPassword = await bcrypt.hash("admin123", 12);
-  const admin = await prisma.user.upsert({
-    where: { email: "admin@shopwave.com" },
+  await prisma.user.upsert({
+    where: { email: "admin@gadgethubsignature.com" },
     update: {},
-    create: {
-      email: "admin@shopwave.com",
-      name: "Admin User",
-      password: adminPassword,
-      role: "ADMIN",
-    },
+    create: { email: "admin@gadgethubsignature.com", name: "Admin", password: adminPassword, role: "ADMIN" },
   });
 
-  // Demo user
   const userPassword = await bcrypt.hash("user123", 12);
   await prisma.user.upsert({
-    where: { email: "demo@shopwave.com" },
+    where: { email: "demo@gadgethubsignature.com" },
     update: {},
-    create: {
-      email: "demo@shopwave.com",
-      name: "Demo User",
-      password: userPassword,
-      role: "USER",
-    },
+    create: { email: "demo@gadgethubsignature.com", name: "Demo User", password: userPassword, role: "USER" },
   });
 
-  // Categories
   const categories = await Promise.all([
-    prisma.category.upsert({
-      where: { slug: "electronics" },
-      update: {},
-      create: {
-        name: "Electronics",
-        slug: "electronics",
-        description: "Phones, laptops, gadgets and accessories",
-        image: "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400",
-      },
-    }),
-    prisma.category.upsert({
-      where: { slug: "fashion" },
-      update: {},
-      create: {
-        name: "Fashion",
-        slug: "fashion",
-        description: "Clothing, shoes and accessories",
-        image: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=400",
-      },
-    }),
-    prisma.category.upsert({
-      where: { slug: "home-living" },
-      update: {},
-      create: {
-        name: "Home & Living",
-        slug: "home-living",
-        description: "Furniture, decor and kitchen essentials",
-        image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400",
-      },
-    }),
-    prisma.category.upsert({
-      where: { slug: "beauty" },
-      update: {},
-      create: {
-        name: "Beauty",
-        slug: "beauty",
-        description: "Skincare, makeup and personal care",
-        image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400",
-      },
-    }),
+    prisma.category.upsert({ where: { slug: "airpods" }, update: {}, create: { name: "AirPods & Earbuds", slug: "airpods", description: "Wireless earbuds and headphones", image: "https://images.unsplash.com/photo-1606741965429-02919b2e0806?w=400" } }),
+    prisma.category.upsert({ where: { slug: "computers" }, update: {}, create: { name: "Computers", slug: "computers", description: "Laptops, desktops and accessories", image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400" } }),
+    prisma.category.upsert({ where: { slug: "cameras" }, update: {}, create: { name: "Cameras", slug: "cameras", description: "Digital cameras and photography gear", image: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400" } }),
+    prisma.category.upsert({ where: { slug: "batteries" }, update: {}, create: { name: "Batteries & Power", slug: "batteries", description: "Power banks, chargers and batteries", image: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400" } }),
+    prisma.category.upsert({ where: { slug: "storage" }, update: {}, create: { name: "Storage", slug: "storage", description: "USB drives, SSDs and memory cards", image: "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400" } }),
   ]);
 
-  // Products
+  const [airpods, computers, cameras, batteries, storage] = categories;
+
   const products = [
-    {
-      name: "Wireless Noise-Cancelling Headphones",
-      slug: "wireless-noise-cancelling-headphones",
-      description: "Premium over-ear headphones with active noise cancellation, 30-hour battery life, and crystal-clear audio. Perfect for travel and work-from-home.",
-      price: 299.99,
-      comparePrice: 399.99,
-      stock: 50,
-      featured: true,
-      categorySlug: "electronics",
-      images: [
-        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600",
-        "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=600",
-      ],
-    },
-    {
-      name: "Smart Watch Pro",
-      slug: "smart-watch-pro",
-      description: "Track fitness, receive notifications, and monitor health metrics with this sleek smartwatch. Water-resistant with 7-day battery life.",
-      price: 199.99,
-      comparePrice: 249.99,
-      stock: 30,
-      featured: true,
-      categorySlug: "electronics",
-      images: [
-        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600",
-        "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=600",
-      ],
-    },
-    {
-      name: "Minimalist Leather Sneakers",
-      slug: "minimalist-leather-sneakers",
-      description: "Handcrafted from genuine full-grain leather. Minimal design that pairs with everything. Available in white, black, and tan.",
-      price: 120.00,
-      comparePrice: 160.00,
-      stock: 75,
-      featured: true,
-      categorySlug: "fashion",
-      images: [
-        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
-        "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600",
-      ],
-    },
-    {
-      name: "Linen Summer Dress",
-      slug: "linen-summer-dress",
-      description: "Breathable 100% linen dress perfect for warm weather. Available in sage, ivory, and rust. Machine washable.",
-      price: 85.00,
-      stock: 40,
-      featured: false,
-      categorySlug: "fashion",
-      images: [
-        "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600",
-      ],
-    },
-    {
-      name: "Ceramic Pour-Over Coffee Set",
-      slug: "ceramic-pour-over-coffee-set",
-      description: "Handmade ceramic pour-over dripper with matching server and two mugs. The perfect morning ritual companion.",
-      price: 65.00,
-      comparePrice: 80.00,
-      stock: 25,
-      featured: true,
-      categorySlug: "home-living",
-      images: [
-        "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600",
-        "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600",
-      ],
-    },
-    {
-      name: "Portable Bluetooth Speaker",
-      slug: "portable-bluetooth-speaker",
-      description: "360° surround sound in a compact, waterproof design. 20-hour playtime and built-in power bank.",
-      price: 79.99,
-      stock: 60,
-      featured: false,
-      categorySlug: "electronics",
-      images: [
-        "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600",
-      ],
-    },
-    {
-      name: "Natural Glow Skincare Kit",
-      slug: "natural-glow-skincare-kit",
-      description: "Complete 5-step skincare routine with cleanser, toner, vitamin C serum, moisturizer, and SPF30. Suitable for all skin types.",
-      price: 95.00,
-      comparePrice: 130.00,
-      stock: 35,
-      featured: true,
-      categorySlug: "beauty",
-      images: [
-        "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600",
-        "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600",
-      ],
-    },
-    {
-      name: "Modular Bookshelf",
-      slug: "modular-bookshelf",
-      description: "Stackable modular shelving system in solid walnut veneer. Mix and match units to create your perfect configuration.",
-      price: 340.00,
-      stock: 15,
-      featured: false,
-      categorySlug: "home-living",
-      images: [
-        "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600",
-      ],
-    },
+    { name: "Apple AirPods Pro (2nd Gen)", slug: "apple-airpods-pro-2nd-gen", description: "Industry-leading Active Noise Cancellation, Adaptive Transparency, and Personalized Spatial Audio. USB-C charging case with 30-hour battery.", price: 899.99, comparePrice: 1099.99, stock: 40, featured: true, categoryId: airpods.id, images: ["https://images.unsplash.com/photo-1606741965429-02919b2e0806?w=600", "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=600"] },
+    { name: "Samsung Galaxy Buds2 Pro", slug: "samsung-galaxy-buds2-pro", description: "Intelligent ANC, 360° audio, and seamless Galaxy ecosystem integration. IPX7 water resistant.", price: 599.99, comparePrice: 749.99, stock: 35, featured: true, categoryId: airpods.id, images: ["https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600"] },
+    { name: "Sony WF-1000XM5", slug: "sony-wf-1000xm5", description: "World-class noise cancellation in the smallest, lightest body ever. LDAC for high-quality audio streaming.", price: 749.99, comparePrice: null, stock: 25, featured: false, categoryId: airpods.id, images: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600"] },
+    { name: "MacBook Air M3 13\"", slug: "macbook-air-m3-13", description: "Supercharged by the M3 chip. Up to 18 hours battery, 8GB RAM, 256GB SSD. Fanless, silent performance.", price: 7499.99, comparePrice: 8199.99, stock: 15, featured: true, categoryId: computers.id, images: ["https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600", "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600"] },
+    { name: "Dell XPS 15 OLED", slug: "dell-xps-15-oled", description: "15.6\" OLED display, Intel Core i7, 16GB RAM, 512GB SSD. Professional powerhouse for creators.", price: 9299.99, comparePrice: 10499.99, stock: 10, featured: true, categoryId: computers.id, images: ["https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=600"] },
+    { name: "Lenovo ThinkPad X1 Carbon", slug: "lenovo-thinkpad-x1-carbon", description: "14\" ultra-light business laptop at just 1.12kg. Intel Core i5, 16GB RAM, 512GB SSD, MIL-SPEC durability.", price: 6799.99, comparePrice: null, stock: 20, featured: false, categoryId: computers.id, images: ["https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=600"] },
+    { name: "Sony Alpha A7 IV", slug: "sony-alpha-a7-iv", description: "33MP full-frame mirrorless camera. 4K60p video, real-time Eye AF, 10fps burst. Perfect for pros and enthusiasts.", price: 8999.99, comparePrice: 9999.99, stock: 12, featured: true, categoryId: cameras.id, images: ["https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=600", "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600"] },
+    { name: "Canon EOS R50", slug: "canon-eos-r50", description: "24.2MP APS-C mirrorless camera. Dual Pixel CMOS AF II, 4K video, compact and beginner-friendly.", price: 3499.99, comparePrice: 3999.99, stock: 20, featured: false, categoryId: cameras.id, images: ["https://images.unsplash.com/photo-1581591524425-c7e0978865fc?w=600"] },
+    { name: "GoPro HERO12 Black", slug: "gopro-hero12-black", description: "5.3K video, HyperSmooth 6.0 stabilization, waterproof to 10m. Capture every adventure.", price: 1999.99, comparePrice: 2299.99, stock: 30, featured: true, categoryId: cameras.id, images: ["https://images.unsplash.com/photo-1598971861713-54ad16a7e72e?w=600"] },
+    { name: "Anker 27,000mAh Power Bank", slug: "anker-27000mah-power-bank", description: "65W fast charging, charges laptop + phone simultaneously. 3 USB ports. Enough power for 5 full phone charges.", price: 349.99, comparePrice: 449.99, stock: 60, featured: true, categoryId: batteries.id, images: ["https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=600"] },
+    { name: "Baseus 20W USB-C Charger", slug: "baseus-20w-usbc-charger", description: "GaN technology, ultra-compact, supports PD 3.0 fast charging. Compatible with iPhone, Samsung, MacBook.", price: 89.99, comparePrice: null, stock: 100, featured: false, categoryId: batteries.id, images: ["https://images.unsplash.com/photo-1625842268584-8f3296236761?w=600"] },
+    { name: "Samsung 990 Pro 1TB SSD", slug: "samsung-990-pro-1tb-ssd", description: "NVMe M.2 SSD with read speeds up to 7,450MB/s. PCIe 4.0, perfect for gaming and creative work.", price: 699.99, comparePrice: 849.99, stock: 45, featured: true, categoryId: storage.id, images: ["https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=600"] },
+    { name: "SanDisk 512GB USB-C Flash Drive", slug: "sandisk-512gb-usbc-flash-drive", description: "Ultra-fast USB 3.2 transfer speeds. Dual connector (USB-C + USB-A). Compact and pocket-friendly.", price: 199.99, comparePrice: 249.99, stock: 80, featured: false, categoryId: storage.id, images: ["https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600"] },
   ];
 
   for (const p of products) {
-    const cat = categories.find((c) => c.slug === p.categorySlug);
-    if (!cat) continue;
     await prisma.product.upsert({
       where: { slug: p.slug },
       update: {},
-      create: {
-        name: p.name,
-        slug: p.slug,
-        description: p.description,
-        price: p.price,
-        comparePrice: p.comparePrice,
-        stock: p.stock,
-        featured: p.featured,
-        published: true,
-        categoryId: cat.id,
-        images: p.images,
-      },
+      create: { ...p, published: true },
     });
   }
 
-  console.log("✅ Seed complete!");
-  console.log("👤 Admin: admin@shopwave.com / admin123");
-  console.log("👤 Demo:  demo@shopwave.com  / user123");
+  console.log("✅ GadgetHub Signature seeded!");
+  console.log("👤 Admin: admin@gadgethubsignature.com / admin123");
+  console.log("👤 Demo:  demo@gadgethubsignature.com  / user123");
 }
 
-main()
-  .catch(console.error)
-  .finally(() => prisma.$disconnect());
+main().catch(console.error).finally(() => prisma.$disconnect());
